@@ -43,8 +43,6 @@ export default {
       return prices.length ? Math.ceil(Math.max(...prices)) : 0;
     });
 
-    const selectedPriceLimit = Vue.computed(() => priceLimit.value ?? maxCatalogPrice.value);
-
     const filteredItems = Vue.computed(() => {
       const query = searchQuery.value.trim().toLocaleLowerCase();
 
@@ -119,7 +117,6 @@ export default {
       selectedFilters,
       filterOptions,
       maxCatalogPrice,
-      selectedPriceLimit,
       filteredItems,
       activeFilters,
       clearFilter,
@@ -184,13 +181,13 @@ export default {
                 min="0"
                 :max="maxCatalogPrice || 1"
                 step="1"
-                :value="selectedPriceLimit"
+                :value="priceLimit !== null ? priceLimit : maxCatalogPrice"
                 :disabled="maxCatalogPrice === 0"
-                :aria-valuetext="'Up to $' + selectedPriceLimit"
+                :aria-valuetext="'Up to $' + (priceLimit !== null ? priceLimit : maxCatalogPrice)"
                 aria-describedby="pillow-price-value"
                 @input="priceLimit = Number($event.target.value)" />
               <output id="pillow-price-value" for="pillow-price">
-                Up to ${{ selectedPriceLimit }}
+                Up to ${{ priceLimit !== null ? priceLimit : maxCatalogPrice }}
               </output>
             </div>
 
