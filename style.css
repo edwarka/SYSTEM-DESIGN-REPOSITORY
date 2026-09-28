@@ -720,6 +720,29 @@ button:focus-visible {
 
 .cart-item-summary {
   display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cart-item-image,
+.cart-item-image-placeholder {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  place-items: center;
+}
+
+.cart-item-image-placeholder {
+  background: #e8efed;
+  color: var(--muted-text);
+}
+
+.cart-item-copy {
+  display: grid;
   gap: 4px;
   min-width: 0;
 }

@@ -57,8 +57,19 @@ export default {
         </p>
         <div v-for="item in cartItems" :key="item.id" class="cart-row">
           <div class="cart-item-summary">
-            <router-link :to="'/items/' + item.id" class="cart-item-name">{{ item.name }}</router-link>
-            <span class="cart-unit-price">{{ '$' + Number(item.price).toFixed(2) }} each</span>
+            <img
+              v-if="item.imageUrl"
+              :src="item.imageUrl"
+              alt=""
+              aria-hidden="true"
+              class="cart-item-image" />
+            <div v-else class="cart-item-image-placeholder" aria-hidden="true">
+              <i class="bi bi-image"></i>
+            </div>
+            <div class="cart-item-copy">
+              <router-link :to="'/items/' + item.id" class="cart-item-name">{{ item.name }}</router-link>
+              <span class="cart-unit-price">{{ '$' + Number(item.price).toFixed(2) }} each</span>
+            </div>
           </div>
           <div class="cart-quantity-control">
             <label :for="'cart-quantity-' + item.id">Quantity</label>
