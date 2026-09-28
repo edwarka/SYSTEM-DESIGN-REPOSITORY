@@ -407,7 +407,18 @@ export default {
                 <th scope="col">Pillow detail</th>
                 <th v-for="item in selectedComparisonItems" :key="item.id" scope="col">
                   <div class="comparison-column-heading">
-                    <span>{{ item.name }}</span>
+                    <div class="comparison-product">
+                      <img
+                        v-if="item.imageUrl"
+                        :src="item.imageUrl"
+                        alt=""
+                        aria-hidden="true"
+                        class="comparison-product-image" />
+                      <div v-else class="comparison-image-placeholder" aria-hidden="true">
+                        <i class="bi bi-image"></i>
+                      </div>
+                      <span>{{ item.name }}</span>
+                    </div>
                     <button
                       class="remove-comparison-item"
                       type="button"

@@ -76,7 +76,7 @@ button:focus-visible {
 
 .site-nav-inner {
   display: flex;
-  min-height: 76px;
+  min-height: 96px;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
@@ -87,15 +87,15 @@ button:focus-visible {
   align-items: center;
   gap: 12px;
   color: var(--brand-primary-dark);
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   text-decoration: none;
 }
 
 .brand-name img {
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 64px;
   object-fit: contain;
 }
 
@@ -190,9 +190,9 @@ button:focus-visible {
 
 .home-hero h1 img {
   display: block;
-  flex: 0 0 56px;
-  width: 56px;
-  height: 56px;
+  flex: 0 0 112px;
+  width: 112px;
+  height: 90px;
   object-fit: contain;
 }
 
@@ -930,14 +930,45 @@ button:focus-visible {
 }
 
 .checkout-summary-list li {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .checkout-summary-list li span:last-child {
   flex: 0 0 auto;
   font-weight: 600;
+}
+
+.checkout-summary-item {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkout-summary-item > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.checkout-summary-image,
+.checkout-summary-image-placeholder {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  place-items: center;
+}
+
+.checkout-summary-image-placeholder {
+  background: #e8efed;
+  color: var(--muted-text);
 }
 
 .checkout-summary-total {
@@ -1041,9 +1072,31 @@ button:focus-visible {
 
 .comparison-column-heading {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
+}
+
+.comparison-product {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  min-width: 0;
+}
+
+.comparison-product-image,
+.comparison-image-placeholder {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  place-items: center;
+}
+
+.comparison-image-placeholder {
+  background: #e8efed;
+  color: var(--muted-text);
 }
 
 .remove-comparison-item {
@@ -1313,6 +1366,16 @@ button:focus-visible {
 }
 
 @media (max-width: 420px) {
+  .home-hero h1 {
+    gap: 12px;
+  }
+
+  .home-hero h1 img {
+    flex-basis: 80px;
+    width: 80px;
+    height: 64px;
+  }
+
   .site-nav-inner {
     align-items: flex-start;
     flex-direction: column;

@@ -19,7 +19,7 @@
 | T11 | Add order confirmation states and prevent completed purchases when payment fails or inventory is unavailable | R6, R7, R12, ADR-05 | T9, T10 | Done |
 | T12 | Add shipping and return information before purchase in the cart and product flows | R16, ADR-01 | T6, T9, T10 | Done |
 | T13 | Improve the storefront layout for mobile and desktop usability across catalog, detail, cart, and checkout sections | R17, ADR-01 | T3, T6, T8, T9, T10 | Done |
-| T14 | Test the key customer flows for catalog browsing, finder use, comparison, and checkout completion | R2, R3, R4, R5, R6, R7, R13, R17 | T4, T5, T8, T9, T10, T11 | In progress |
+| T14 | Test the key customer flows for catalog browsing, finder use, comparison, and checkout completion | R2, R3, R4, R5, R6, R7, R13, R17 | T4, T5, T8, T9, T10, T11 | Done |
 
 **Status values:** Not started · In progress · Done · Blocked
 

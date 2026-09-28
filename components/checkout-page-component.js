@@ -52,6 +52,7 @@ export default {
         items: cartItems.value.map((item) => ({
           id: item.id,
           name: item.name,
+          imageUrl: item.imageUrl,
           quantity: item.quantity,
           price: Number(item.price),
           lineTotal: item.lineTotal,
@@ -108,7 +109,18 @@ export default {
         </p>
         <ul class="checkout-summary-list">
           <li v-for="item in completedOrder.items" :key="item.id">
-            <span>{{ item.name }} x {{ item.quantity }}</span>
+            <div class="checkout-summary-item">
+              <img
+                v-if="item.imageUrl"
+                :src="item.imageUrl"
+                alt=""
+                aria-hidden="true"
+                class="checkout-summary-image" />
+              <div v-else class="checkout-summary-image-placeholder" aria-hidden="true">
+                <i class="bi bi-image"></i>
+              </div>
+              <span>{{ item.name }} x {{ item.quantity }}</span>
+            </div>
             <span>{{ '$' + item.lineTotal.toFixed(2) }}</span>
           </li>
         </ul>
@@ -244,7 +256,18 @@ export default {
           <h2 id="checkout-summary-title">Cart summary</h2>
           <ul class="checkout-summary-list">
             <li v-for="item in cartItems" :key="item.id">
-              <span>{{ item.name }} x {{ item.quantity }}</span>
+              <div class="checkout-summary-item">
+                <img
+                  v-if="item.imageUrl"
+                  :src="item.imageUrl"
+                  alt=""
+                  aria-hidden="true"
+                  class="checkout-summary-image" />
+                <div v-else class="checkout-summary-image-placeholder" aria-hidden="true">
+                  <i class="bi bi-image"></i>
+                </div>
+                <span>{{ item.name }} x {{ item.quantity }}</span>
+              </div>
               <span>{{ '$' + item.lineTotal.toFixed(2) }}</span>
             </li>
           </ul>

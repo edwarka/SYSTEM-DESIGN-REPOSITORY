@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1225 980" width="1225" height="980">
+  <defs>
+    <filter id="black-mask-source">
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" />
+    </filter>
+    <clipPath id="logo-bounds" clipPathUnits="userSpaceOnUse">
+      <rect x="0" y="19.76" width="1225" height="940.5" />
+    </clipPath>
+    <mask id="logo-mark" maskUnits="userSpaceOnUse" mask-type="luminance" x="0" y="0" width="1225" height="980">
+      <rect width="1225" height="980" fill="#000000" />
+      <rect x="0" y="19.76" width="1225" height="940.5" fill="#ffffff" />
+      <image href="./logo.svg" width="1225" height="980" clip-path="url(#logo-bounds)" filter="url(#black-mask-source)" />
+    </mask>
+  </defs>
+  <rect width="1225" height="980" fill="#174A5B" mask="url(#logo-mark)" />
+</svg>
