@@ -1,18 +1,49 @@
 export default {
   name: 'landing-page-component',
   template: /* html */ `
-    <div class="container py-4">
-      <h1 class="mb-3">Welcome!</h1>
-      <p class="lead">This is a web app template in need of customization and improved interaction design.</p>
-      <router-link to="/items" class="btn btn-primary mb-4"><i class="bi bi-list-check me-1"></i>View the Example Collection</router-link>
+    <div class="home-page">
+      <section class="home-hero" aria-labelledby="home-title">
+        <img
+          class="home-hero-image"
+          src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2000&q=85"
+          alt=""
+          aria-hidden="true" />
+        <div class="home-hero-content content-width">
+          <p class="eyebrow">Comfort, considered</p>
+          <h1 id="home-title">Sleep Impact</h1>
+          <p class="home-hero-copy">Find a pillow that fits the way you sleep.</p>
+          <router-link to="/items" class="btn btn-primary">
+            Find your pillow <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+          </router-link>
+        </div>
+      </section>
 
-      <h2 class="h4 mt-3">Template App Description</h2>
-      <p>
-        This is a simple Vue.js starter template that demonstrates how to build a small web app with a landing page, a collection page, and an item detail page. It uses Vue's Composition API for state management and Vue Router for navigation. The app loads a dataset from a CSV file and allows users to bookmark items for easy access later.
-      </p>
-      <p>
-        Your goal is to customize the app by adapting it to a different dataset, improving the user interface and interaction design, and adding new features that enhance the user experience. You can use any public dataset that interests you, such as movies, books, recipes, or anything else you find compelling. The app is intentionally simple to give you a lot of freedom in how you choose to enhance it.
-      </p>
+      <section class="home-intro content-width" aria-labelledby="intro-title">
+        <p class="eyebrow">A clearer way to compare</p>
+        <h2 id="intro-title">The details that help you choose</h2>
+        <p class="home-intro-copy">
+          Explore sample pillows by firmness, height, material, cooling, and sleeping position.
+          Compare the essentials at your own pace.
+        </p>
+
+        <div class="home-details-grid">
+          <article class="home-detail">
+            <i class="bi bi-sliders2" aria-hidden="true"></i>
+            <h3>Know what's inside</h3>
+            <p>See the materials and construction listed for each pillow.</p>
+          </article>
+          <article class="home-detail">
+            <i class="bi bi-moon-stars" aria-hidden="true"></i>
+            <h3>Find your feel</h3>
+            <p>Review firmness and height to understand each option.</p>
+          </article>
+          <article class="home-detail">
+            <i class="bi bi-arrows-angle-expand" aria-hidden="true"></i>
+            <h3>Compare sleep styles</h3>
+            <p>Check which sleeping positions each sample is designed for.</p>
+          </article>
+        </div>
+      </section>
     </div>
   `,
 };

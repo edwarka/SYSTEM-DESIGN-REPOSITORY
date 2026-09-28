@@ -43,6 +43,7 @@ We will build a responsive online store focused on the essentials of the shoppin
 ## 4. Dependencies and Assumptions
 
 - External services/tools needed:
+  - [Sleep Impact Design System v1.0](design-system.md) for brand colors, typography, components, and accessibility standards.
   - Product catalog source and initial set of pillow data for launch.
   - Hosted database and API environment for products, carts, orders, and inventory.
   - Authentication provider for customer logins and protected account access.

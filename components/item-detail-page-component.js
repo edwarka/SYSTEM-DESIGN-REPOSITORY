@@ -14,42 +14,64 @@ export default {
     };
   },
   template: /* html */ `
-    <section class="container py-4">
-      <router-link to="/items" class="btn btn-link ps-0 mb-3">← Back to collection</router-link>
+    <section class="page-section content-width" aria-label="Pillow details">
+      <router-link to="/items" class="back-link mb-4">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to pillows
+      </router-link>
 
-      <div v-if="itemsStore.isLoading" class="alert alert-secondary" role="status">
-        Loading item details...
+      <div v-if="itemsStore.isLoading" class="state-message" role="status">
+        Loading pillow details...
       </div>
 
-      <div v-else-if="itemsStore.error" class="alert alert-danger" role="alert">
+      <div v-else-if="itemsStore.error" class="state-message state-error" role="alert">
         {{ itemsStore.error }}
       </div>
 
-      <div v-else-if="!selectedItem" class="alert alert-warning" role="alert">
-        Item not found.
+      <div v-else-if="!selectedItem" class="state-message" role="status">
+        This pillow could not be found. Return to the collection to see the available options.
       </div>
 
-      <article v-else class="card shadow-sm border-0 overflow-hidden">
+      <article v-else class="detail-layout">
         <img
           v-if="selectedItem.imageUrl"
           :src="selectedItem.imageUrl"
-          :alt="selectedItem.name"
-          class="item-detail-image w-100 object-fit-cover" />
+          :alt="selectedItem.name + ' pillow'"
+          class="item-detail-image detail-image object-fit-cover" />
         <div
           v-else
-          class="item-detail-image w-100 d-flex align-items-center justify-content-center bg-light text-muted">
-          No image available
+          class="item-detail-image detail-image image-placeholder d-flex align-items-center justify-content-center">
+          Image not available
         </div>
 
-        <div class="card-body p-4">
-          <div class="d-flex align-items-center gap-2 mb-2">
-            <h1 class="h3 mb-0">{{ selectedItem.name }}</h1>
-            <span class="badge text-bg-primary">{{ selectedItem.category || 'General' }}</span>
-          </div>
+        <div class="detail-content">
+          <p class="product-category">{{ selectedItem.category || 'Pillow' }}</p>
+          <h1>{{ selectedItem.name }}</h1>
+          <p class="detail-description">{{ selectedItem.description || 'Details coming soon.' }}</p>
+          <p class="detail-price">
+            {{ selectedItem.price == null ? 'Price not listed' : '$' + Number(selectedItem.price).toFixed(2) }}
+          </p>
 
-          <p class="lead mb-3">{{ selectedItem.description || 'No description available.' }}</p>
-          <p class="mb-0"><strong>Location:</strong> {{ selectedItem.location || 'N/A' }}</p>
-          <p class="text-muted mt-2 mb-0"><strong>Item ID:</strong> {{ selectedItem.id }}</p>
+          <h2 class="detail-subheading">Pillow details</h2>
+          <dl class="detail-attributes">
+            <template v-if="selectedItem.size">
+              <dt>Size</dt><dd>{{ selectedItem.size }}</dd>
+            </template>
+            <template v-if="selectedItem.firmness">
+              <dt>Firmness</dt><dd>{{ selectedItem.firmness }}</dd>
+            </template>
+            <template v-if="selectedItem.height">
+              <dt>Height</dt><dd>{{ selectedItem.height }}</dd>
+            </template>
+            <template v-if="selectedItem.material">
+              <dt>Material</dt><dd>{{ selectedItem.material }}</dd>
+            </template>
+            <template v-if="selectedItem.cooling">
+              <dt>Cooling</dt><dd>{{ selectedItem.cooling }}</dd>
+            </template>
+            <template v-if="selectedItem.sleepingPosition">
+              <dt>Recommended for</dt><dd>{{ selectedItem.sleepingPosition }}</dd>
+            </template>
+          </dl>
         </div>
       </article>
     </section>

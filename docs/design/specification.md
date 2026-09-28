@@ -166,6 +166,7 @@ Competitive research of Purple, Casper, and Sleep Number shows that customers be
 - **Performance:** Core pages should load within approximately 3 seconds.
 - **Security/Privacy:** Customer information and payment data must be protected. Full payment card information shall not be stored.
 - **Accessibility:** The platform should target WCAG 2.2 AA.
+- **Branding:** The storefront shall follow [Sleep Impact Design System v1.0](design-system.md).
 - **Compliance/Legal:** The platform shall provide privacy, terms, shipping, and return policies.
 - **Budget/Timeline:** Initial investment is approximately $50,000, with a target payback period of 12–18 months.
 
