@@ -4,6 +4,7 @@ export default {
     const itemsStore = Vue.inject('itemsStore');
     const searchQuery = Vue.ref('');
     const priceLimit = Vue.ref(null);
+    const selectedComparisonIds = Vue.ref([]);
     const selectedFilters = Vue.reactive({
       firmness: '',
       material: '',
@@ -19,6 +20,20 @@ export default {
       { key: 'cooling', label: 'Cooling' },
       { key: 'sleepingPosition', label: 'Sleeping position' },
     ];
+    const comparisonAttributes = [
+      { key: 'price', label: 'Price' },
+      { key: 'size', label: 'Size' },
+      { key: 'firmness', label: 'Firmness' },
+      { key: 'height', label: 'Height' },
+      { key: 'material', label: 'Material' },
+      { key: 'cooling', label: 'Cooling' },
+      { key: 'sleepingPosition', label: 'Sleeping position' },
+      { key: 'rating', label: 'Sample rating' },
+    ];
+
+    const selectedComparisonItems = Vue.computed(() => itemsStore.items.filter((item) => (
+      selectedComparisonIds.value.includes(item.id)
+    )));
 
     const filterOptions = Vue.computed(() => {
       const getOptions = (property) => [...new Set(
@@ -110,6 +125,26 @@ export default {
       });
     }
 
+    function removeComparisonItem(itemId) {
+      selectedComparisonIds.value = selectedComparisonIds.value.filter((id) => id !== itemId);
+    }
+
+    function clearComparison() {
+      selectedComparisonIds.value = [];
+    }
+
+    function comparisonValue(item, key) {
+      if (key === 'price') {
+        return item.price == null || !Number.isFinite(Number(item.price))
+          ? 'Price not listed'
+          : '$' + Number(item.price).toFixed(2);
+      }
+      if (key === 'rating') {
+        return '5.0 out of 5 (1 sample review)';
+      }
+      return item[key] || 'Not listed';
+    }
+
     return {
       itemsStore,
       searchQuery,
@@ -121,6 +156,12 @@ export default {
       activeFilters,
       clearFilter,
       clearAllFilters,
+      selectedComparisonIds,
+      selectedComparisonItems,
+      comparisonAttributes,
+      removeComparisonItem,
+      clearComparison,
+      comparisonValue,
     };
   },
   template: /* html */ `
@@ -171,7 +212,6 @@ export default {
                 </button>
               </div>
             </div>
-
             <div class="filter-control price-filter-control">
               <label for="pillow-price">Maximum price</label>
               <input
@@ -276,6 +316,18 @@ export default {
             <div class="card-body d-flex flex-column">
               <p class="product-category">{{ item.category || 'Pillow' }}</p>
               <h2 class="product-name">{{ item.name }}</h2>
+              <p class="product-rating-label">Sample rating</p>
+              <p class="product-rating">
+                <span class="product-rating-stars" aria-hidden="true">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </span>
+                <span>5.0 out of 5</span>
+                <span>(1 sample review)</span>
+              </p>
               <p class="product-description flex-grow-1 collection-description">
                 {{ item.description || 'Details coming soon.' }}
               </p>
@@ -289,18 +341,94 @@ export default {
                 <li v-if="item.sleepingPosition"><span>Recommended for</span><span>{{ item.sleepingPosition }}</span></li>
               </ul>
 
+              <div class="compare-choice form-check">
+                <input
+                  :id="'compare-' + item.id"
+                  v-model="selectedComparisonIds"
+                  class="form-check-input"
+                  type="checkbox"
+                  :value="item.id"
+                  :disabled="selectedComparisonIds.length >= 3 && !selectedComparisonIds.includes(item.id)" />
+                <label class="form-check-label" :for="'compare-' + item.id">Compare</label>
+              </div>
+
               <div class="product-card-footer">
                 <p class="product-price mb-0">
                   {{ item.price == null ? 'Price not listed' : '$' + Number(item.price).toFixed(2) }}
                 </p>
-                <router-link :to="'/items/' + item.id" class="btn btn-outline-primary">
-                  View details <span class="visually-hidden">for {{ item.name }}</span>
-                </router-link>
+                <div class="product-card-actions">
+                  <router-link :to="'/items/' + item.id" class="btn btn-outline-primary">
+                    View details <span class="visually-hidden">for {{ item.name }}</span>
+                  </router-link>
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    :disabled="!item.inStock"
+                    :aria-label="'Add ' + item.name + ' to cart'"
+                    @click="itemsStore.addToCart(item)">
+                    {{ item.inStock ? 'Add to cart' : 'Out of stock' }}
+                  </button>
+                </div>
               </div>
             </div>
           </article>
         </div>
       </div>
+
+      <section class="comparison-section" aria-labelledby="comparison-title">
+        <div class="comparison-heading">
+          <div>
+            <h2 id="comparison-title">Compare pillows</h2>
+            <p class="comparison-count" aria-live="polite">
+              {{ selectedComparisonItems.length }} of 3 selected
+            </p>
+          </div>
+          <button
+            v-if="selectedComparisonItems.length"
+            class="clear-filters-button"
+            type="button"
+            @click="clearComparison">
+            Clear comparison
+          </button>
+        </div>
+
+        <p v-if="selectedComparisonItems.length < 2" class="comparison-guidance" role="status">
+          Select at least two pillows to compare.
+        </p>
+        <p v-else-if="selectedComparisonItems.length === 3" class="comparison-guidance" role="status">
+          Three pillows selected. Remove one to choose another.
+        </p>
+
+        <div v-if="selectedComparisonItems.length >= 2" class="comparison-table-wrap" tabindex="0" aria-label="Pillow comparison table">
+          <table class="comparison-table">
+            <caption class="visually-hidden">Comparison of selected pillows</caption>
+            <thead>
+              <tr>
+                <th scope="col">Pillow detail</th>
+                <th v-for="item in selectedComparisonItems" :key="item.id" scope="col">
+                  <div class="comparison-column-heading">
+                    <span>{{ item.name }}</span>
+                    <button
+                      class="remove-comparison-item"
+                      type="button"
+                      :aria-label="'Remove ' + item.name + ' from comparison'"
+                      @click="removeComparisonItem(item.id)">
+                      <i class="bi bi-x-lg" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="attribute in comparisonAttributes" :key="attribute.key">
+                <th scope="row">{{ attribute.label }}</th>
+                <td v-for="item in selectedComparisonItems" :key="item.id">
+                  {{ comparisonValue(item, attribute.key) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   `,

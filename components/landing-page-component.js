@@ -1,5 +1,91 @@
 export default {
   name: 'landing-page-component',
+  setup() {
+    const itemsStore = Vue.inject('itemsStore');
+    const finderSection = Vue.ref(null);
+    const hasSearched = Vue.ref(false);
+    const validationMessage = Vue.ref('');
+    const selectedPreferences = Vue.reactive({
+      firmness: '',
+      height: '',
+      material: '',
+      cooling: '',
+      sleepingPosition: '',
+    });
+    const preferenceFields = [
+      { key: 'firmness', label: 'Firmness' },
+      { key: 'height', label: 'Height' },
+      { key: 'material', label: 'Material' },
+      { key: 'cooling', label: 'Cooling' },
+    ];
+
+    const preferenceOptions = Vue.computed(() => {
+      const options = {};
+      preferenceFields.forEach(({ key }) => {
+        options[key] = [...new Set(
+          itemsStore.items.map((item) => item[key]).filter(Boolean),
+        )].sort((first, second) => first.localeCompare(second));
+      });
+      return options;
+    });
+
+    const sleepingPositionOptions = Vue.computed(() => [
+      { label: 'Back sleepers', value: 'back' },
+      { label: 'Side sleepers', value: 'side' },
+      { label: 'Stomach sleepers', value: 'stomach' },
+    ].filter(({ value }) => itemsStore.items.some((item) => (
+      (item.sleepingPosition || '').toLocaleLowerCase().includes(value)
+    ))));
+
+    const recommendedItems = Vue.computed(() => itemsStore.items.filter((item) => {
+      const matchesAttributes = preferenceFields.every(({ key }) => (
+        !selectedPreferences[key] || item[key] === selectedPreferences[key]
+      ));
+      const matchesPosition = !selectedPreferences.sleepingPosition || (
+        (item.sleepingPosition || '').toLocaleLowerCase()
+          .includes(selectedPreferences.sleepingPosition)
+      );
+      return matchesAttributes && matchesPosition;
+    }));
+
+    function findMatches() {
+      const hasPreference = Object.values(selectedPreferences).some(Boolean);
+      if (!hasPreference) {
+        validationMessage.value = 'Choose at least one preference to see recommendations.';
+        hasSearched.value = false;
+        return;
+      }
+      validationMessage.value = '';
+      hasSearched.value = true;
+    }
+
+    function clearFinder() {
+      Object.keys(selectedPreferences).forEach((key) => {
+        selectedPreferences[key] = '';
+      });
+      validationMessage.value = '';
+      hasSearched.value = false;
+    }
+
+    function scrollToFinder() {
+      finderSection.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    return {
+      itemsStore,
+      finderSection,
+      hasSearched,
+      validationMessage,
+      selectedPreferences,
+      preferenceFields,
+      preferenceOptions,
+      sleepingPositionOptions,
+      recommendedItems,
+      findMatches,
+      clearFinder,
+      scrollToFinder,
+    };
+  },
   template: /* html */ `
     <div class="home-page">
       <section class="home-hero" aria-labelledby="home-title">
@@ -15,9 +101,98 @@ export default {
             <span>Sleep Impact</span>
           </h1>
           <p class="home-hero-copy">Find a pillow that fits the way you sleep.</p>
-          <router-link to="/items" class="btn btn-primary">
+          <button type="button" class="btn btn-primary" @click="scrollToFinder">
             Find your pillow <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
-          </router-link>
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="pillow-finder"
+        ref="finderSection"
+        class="home-finder content-width"
+        aria-labelledby="finder-title">
+        <p class="eyebrow">Pillow finder</p>
+        <h2 id="finder-title">Choose what matters to you</h2>
+
+        <form class="finder-panel" @submit.prevent="findMatches">
+          <div v-if="itemsStore.isLoading" class="state-message" role="status">
+            Loading pillow options...
+          </div>
+          <div v-else-if="itemsStore.error" class="state-message state-error" role="alert">
+            {{ itemsStore.error }}
+          </div>
+
+          <div class="finder-controls">
+            <div v-for="field in preferenceFields" :key="field.key" class="filter-control">
+              <label :for="'finder-' + field.key">{{ field.label }}</label>
+              <select
+                :id="'finder-' + field.key"
+                v-model="selectedPreferences[field.key]"
+                class="form-select"
+                :disabled="itemsStore.isLoading || !!itemsStore.error">
+                <option value="">Any {{ field.label.toLocaleLowerCase() }}</option>
+                <option v-for="option in preferenceOptions[field.key]" :key="option" :value="option">
+                  {{ option }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-control">
+              <label for="finder-sleeping-position">Sleeping position</label>
+              <select
+                id="finder-sleeping-position"
+                v-model="selectedPreferences.sleepingPosition"
+                class="form-select"
+                :disabled="itemsStore.isLoading || !!itemsStore.error">
+                <option value="">Any sleeping position</option>
+                <option
+                  v-for="option in sleepingPositionOptions"
+                  :key="option.value"
+                  :value="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <p v-if="validationMessage" class="state-error finder-validation" role="alert">
+            {{ validationMessage }}
+          </p>
+          <div class="finder-actions">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              :disabled="itemsStore.isLoading || !!itemsStore.error">
+              Show recommendations
+            </button>
+            <button type="button" class="finder-clear" @click="clearFinder">
+              Clear choices
+            </button>
+          </div>
+        </form>
+
+        <div v-if="hasSearched" class="finder-results" aria-live="polite">
+          <h3>Recommended pillows</h3>
+          <div v-if="recommendedItems.length === 0" class="state-message" role="status">
+            No pillows match those choices. Try changing a preference.
+          </div>
+          <ul v-else class="finder-result-list">
+            <li v-for="item in recommendedItems" :key="item.id" class="finder-result">
+              <div>
+                <p class="product-category">{{ item.category || 'Pillow' }}</p>
+                <h4 class="product-name">{{ item.name }}</h4>
+                <p class="product-description">
+                  {{ item.price == null ? 'Price not listed' : '$' + Number(item.price).toFixed(2) }}
+                  <span v-if="item.firmness"> | {{ item.firmness }}</span>
+                  <span v-if="item.material"> | {{ item.material }}</span>
+                </p>
+              </div>
+              <router-link :to="'/items/' + item.id" class="btn btn-outline-primary">
+                View details <span class="visually-hidden">for {{ item.name }}</span>
+              </router-link>
+            </li>
+          </ul>
         </div>
       </section>
 

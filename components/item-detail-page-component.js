@@ -50,6 +50,19 @@ export default {
           <p class="detail-price">
             {{ selectedItem.price == null ? 'Price not listed' : '$' + Number(selectedItem.price).toFixed(2) }}
           </p>
+          <p class="availability-label" :class="selectedItem.inStock ? 'availability-in-stock' : 'availability-out-of-stock'">
+            {{ selectedItem.inStock ? 'In stock' : 'Out of stock' }}
+          </p>
+          <button
+            class="btn btn-primary detail-add-to-cart"
+            type="button"
+            :disabled="!selectedItem.inStock"
+            @click="itemsStore.addToCart(selectedItem)">
+            {{ selectedItem.inStock ? 'Add to cart' : 'Out of stock' }}
+          </button>
+          <p v-if="itemsStore.cartMessage" class="cart-message" role="status">
+            {{ itemsStore.cartMessage }}
+          </p>
 
           <h2 class="detail-subheading">Pillow details</h2>
           <dl class="detail-attributes">
@@ -74,6 +87,42 @@ export default {
           </dl>
         </div>
       </article>
+
+      <div v-if="selectedItem" class="detail-information-grid">
+        <section class="detail-information" aria-labelledby="review-title">
+          <p class="eyebrow">Sample review</p>
+          <h2 id="review-title">Customer feedback</h2>
+          <p class="detail-review-rating">
+            <span class="detail-review-stars" aria-hidden="true">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </span>
+            <span>5.0 out of 5 (1 sample review)</span>
+          </p>
+          <blockquote class="detail-review-quote">
+            <p>Comfortable and supportive for my usual sleep position.</p>
+            <footer>Sample customer</footer>
+          </blockquote>
+          <p class="detail-sample-note">Sample review content for this prototype.</p>
+        </section>
+
+        <section class="detail-information" aria-labelledby="delivery-title">
+          <p class="eyebrow">Before you buy</p>
+          <h2 id="delivery-title">Shipping and returns</h2>
+          <div class="detail-policy-item">
+            <h3>Shipping</h3>
+            <p>Sample policy: Standard delivery takes 3-5 business days. Any shipping cost is shown before checkout.</p>
+          </div>
+          <div class="detail-policy-item">
+            <h3>Returns</h3>
+            <p>Sample policy: Start a return within 30 days of delivery. Final return instructions are provided before checkout.</p>
+          </div>
+          <p class="detail-sample-note">Sample policy information for this prototype.</p>
+        </section>
+      </div>
     </section>
   `,
 };

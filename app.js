@@ -2,6 +2,7 @@ import LandingPageComponent from './components/landing-page-component.js';
 import AboutPageComponent from './components/about-page-component.js';
 import NavbarComponent from './components/navbar-component.js';
 import CollectionPageComponent from './components/collection-page-component.js';
+import CartPageComponent from './components/cart-page-component.js';
 import ItemDetailPageComponent from './components/item-detail-page-component.js';
 
 const routes = [
@@ -16,6 +17,10 @@ const routes = [
   {
     path: '/items',
     component: CollectionPageComponent,
+  },
+  {
+    path: '/cart',
+    component: CartPageComponent,
   },
   {
     path: '/items/:id',
@@ -34,6 +39,47 @@ const app = Vue.createApp({
       items: [],
       isLoading: true,
       error: '',
+      cart: [],
+      cartMessage: '',
+      addToCart(item) {
+        if (!item.inStock) {
+          this.cartMessage = item.name + ' is out of stock and cannot be added to the cart.';
+          return;
+        }
+        if (item.price == null || !Number.isFinite(Number(item.price))) {
+          this.cartMessage = item.name + ' cannot be added because its price is not listed.';
+          return;
+        }
+
+        const cartEntry = this.cart.find((entry) => entry.id === item.id);
+        if (cartEntry) {
+          cartEntry.quantity += 1;
+        } else {
+          this.cart.push({ id: item.id, quantity: 1 });
+        }
+        this.cartMessage = item.name + ' added to your cart.';
+      },
+      setCartQuantity(itemId, value) {
+        const cartEntry = this.cart.find((entry) => entry.id === itemId);
+        if (!cartEntry) {
+          return;
+        }
+
+        const quantity = Math.floor(Number(value));
+        if (!Number.isFinite(quantity) || quantity < 1) {
+          cartEntry.quantity = 1;
+          this.cartMessage = 'Quantity must be at least 1.';
+          return;
+        }
+
+        cartEntry.quantity = quantity;
+        this.cartMessage = 'Cart quantity updated.';
+      },
+      removeFromCart(itemId) {
+        const item = this.items.find((product) => product.id === itemId);
+        this.cart = this.cart.filter((entry) => entry.id !== itemId);
+        this.cartMessage = item ? item.name + ' removed from your cart.' : 'Cart item removed.';
+      },
     });
 
     fetch('items-template.csv')
@@ -66,6 +112,7 @@ const app = Vue.createApp({
                 material: String(row.material || '').trim() || null,
                 cooling: String(row.cooling || '').trim() || null,
                 sleepingPosition: String(row.sleeping_position || '').trim() || null,
+                inStock: String(row.in_stock || 'true').trim().toLowerCase() !== 'false',
               }));
               itemsStore.error = '';
             }
