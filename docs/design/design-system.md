@@ -1,6 +1,6 @@
 # Sleep Impact — Design System
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** September 28, 2026  
 **Applies to:** Sleep Impact organization/brand
 
@@ -236,6 +236,7 @@ I want accessibility to be part of the design from the beginning instead of some
 | Version | Date | Change | Approved by |
 |---|---|---|---|
 | 1.0 | 2026-09-28 | Initial version | Pending approval |
+| 1.1 | 2026-09-28 | Recorded completed T1-T14 prototype work: shared pillow attributes and sample catalog; catalog search and filters; preference-based pillow finder; responsive product cards and detail pages with prices, attributes, images, reviews, ratings, and shipping/return details; comparison of up to three pillows; stock-aware cart with quantities, totals, and product previews; separate cart page; guest checkout with shipping form, simulated payment, order confirmation and failure states; shipping/return information in cart and checkout; product images in catalog, detail, cart, comparison, and checkout; enlarged transparent navbar and hero logos; responsive mobile/desktop layouts and tested core flows. | Pending approval |
 
 ---
 
