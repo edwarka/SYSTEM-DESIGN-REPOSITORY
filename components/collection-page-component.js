@@ -63,7 +63,7 @@ export default {
         const matchesAttributes = filterDefinitions.every(({ key }) => {
           return !selectedFilters[key] || item[key] === selectedFilters[key];
         });
-        const matchesPrice = priceLimit.value === null || (
+        const matchesPrice = priceLimit.value == null || (
           item.price != null && Number(item.price) <= priceLimit.value
         );
 
@@ -85,7 +85,7 @@ export default {
         }
       });
 
-      if (priceLimit.value !== null && priceLimit.value < maxCatalogPrice.value) {
+      if (priceLimit.value != null && priceLimit.value < maxCatalogPrice.value) {
         active.push({ key: 'price', label: 'Up to', value: '$' + priceLimit.value });
       }
 
@@ -181,13 +181,13 @@ export default {
                 min="0"
                 :max="maxCatalogPrice || 1"
                 step="1"
-                :value="priceLimit !== null ? priceLimit : maxCatalogPrice"
+                :value="priceLimit == null ? maxCatalogPrice : priceLimit"
                 :disabled="maxCatalogPrice === 0"
-                :aria-valuetext="'Up to $' + (priceLimit !== null ? priceLimit : maxCatalogPrice)"
+                :aria-valuetext="'Up to $' + (priceLimit == null ? maxCatalogPrice : priceLimit)"
                 aria-describedby="pillow-price-value"
                 @input="priceLimit = Number($event.target.value)" />
               <output id="pillow-price-value" for="pillow-price">
-                Up to ${{ priceLimit !== null ? priceLimit : maxCatalogPrice }}
+                Up to \${{ priceLimit == null ? maxCatalogPrice : priceLimit }}
               </output>
             </div>
 
