@@ -59,6 +59,13 @@ const app = Vue.createApp({
                 category: String(row.category || '').trim(),
                 imageUrl: String(row.image_url || '').trim(),
                 location: String(row.location || '').trim(),
+                price: String(row.price ?? '').trim() === '' ? null : Number(row.price),
+                size: String(row.size || '').trim(),
+                firmness: String(row.firmness || '').trim(),
+                height: String(row.height || '').trim(),
+                material: String(row.material || '').trim(),
+                cooling: String(row.cooling || '').trim(),
+                sleepingPosition: String(row.sleeping_position || '').trim(),
               }));
               itemsStore.error = '';
             }
