@@ -61,11 +61,11 @@ const app = Vue.createApp({
                 location: String(row.location || '').trim(),
                 price: String(row.price ?? '').trim() === '' ? null : Number(row.price),
                 size: String(row.size || '').trim(),
-                firmness: String(row.firmness || '').trim(),
-                height: String(row.height || '').trim(),
-                material: String(row.material || '').trim(),
-                cooling: String(row.cooling || '').trim(),
-                sleepingPosition: String(row.sleeping_position || '').trim(),
+                firmness: String(row.firmness || '').trim() || null,
+                height: String(row.height || '').trim() || null,
+                material: String(row.material || '').trim() || null,
+                cooling: String(row.cooling || '').trim() || null,
+                sleepingPosition: String(row.sleeping_position || '').trim() || null,
               }));
               itemsStore.error = '';
             }
