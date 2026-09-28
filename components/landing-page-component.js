@@ -5,12 +5,15 @@ export default {
       <section class="home-hero" aria-labelledby="home-title">
         <img
           class="home-hero-image"
-          src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=2000&q=85"
+          src="https://images.unsplash.com/photo-1654801837430-0cc25fee42b9?auto=format&fit=crop&w=2000&q=85"
           alt=""
           aria-hidden="true" />
         <div class="home-hero-content content-width">
           <p class="eyebrow">Comfort, considered</p>
-          <h1 id="home-title">Sleep Impact</h1>
+          <h1 id="home-title">
+            <img src="./assets/logo-white.svg" alt="" aria-hidden="true" />
+            <span>Sleep Impact</span>
+          </h1>
           <p class="home-hero-copy">Find a pillow that fits the way you sleep.</p>
           <router-link to="/items" class="btn btn-primary">
             Find your pillow <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
