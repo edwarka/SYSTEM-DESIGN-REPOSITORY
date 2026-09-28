@@ -6,10 +6,10 @@
 
 | ID | Task | Traces to (R# / ADR#) | Depends on | Status |
 |----|------|--------------------------|------------|--------|
-| T1 | Define the pillow product data model and required attributes for the catalog | R1, R15, ADR-06 | — | Not started |
-| T2 | Add realistic placeholder pillow data for the storefront catalog | R1, R15, ADR-02 | T1 | Not started |
-| T3 | Adapt the current collection view to display pillow cards with pricing, attributes, and images | R1, R2, R15, ADR-01 | T2 | Not started |
-| T4 | Add search and filtering controls for pillows by price, firmness, material, size, cooling, and sleeping position | R2, R15 | T3 | Not started |
+| T1 | Define the pillow product data model and required attributes for the catalog | R1, R15, ADR-06 | — | Done |
+| T2 | Add realistic placeholder pillow data for the storefront catalog | R1, R15, ADR-02 | T1 | Done |
+| T3 | Adapt the current collection view to display pillow cards with pricing, attributes, and images | R1, R2, R15, ADR-01 | T2 | Done |
+| T4 | Add search and filtering controls for pillows by price, firmness, material, size, cooling, and sleeping position | R2, R15 | T3 | In progress |
 | T5 | Build the pillow finder flow using selected customer preferences and recommendation logic | R3, R15, ADR-06 | T1, T4 | Not started |
 | T6 | Build the product detail page for an individual pillow with reviews, price, shipping, and return information | R1, R9, R14, R15, R16, ADR-01 | T2 | Not started |
 | T7 | Add review and rating display to relevant product cards and product detail views | R9, R14 | T2, T6 | Not started |
