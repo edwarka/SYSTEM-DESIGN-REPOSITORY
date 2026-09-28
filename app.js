@@ -3,6 +3,7 @@ import AboutPageComponent from './components/about-page-component.js';
 import NavbarComponent from './components/navbar-component.js';
 import CollectionPageComponent from './components/collection-page-component.js';
 import CartPageComponent from './components/cart-page-component.js';
+import CheckoutPageComponent from './components/checkout-page-component.js';
 import ItemDetailPageComponent from './components/item-detail-page-component.js';
 
 const routes = [
@@ -23,6 +24,10 @@ const routes = [
     component: CartPageComponent,
   },
   {
+    path: '/checkout',
+    component: CheckoutPageComponent,
+  },
+  {
     path: '/items/:id',
     component: ItemDetailPageComponent,
   },
@@ -41,6 +46,7 @@ const app = Vue.createApp({
       error: '',
       cart: [],
       cartMessage: '',
+      orders: [],
       addToCart(item) {
         if (!item.inStock) {
           this.cartMessage = item.name + ' is out of stock and cannot be added to the cart.';

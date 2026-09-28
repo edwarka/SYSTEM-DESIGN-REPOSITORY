@@ -84,6 +84,20 @@ export default {
           <span>Cart total</span>
           <strong>{{ '$' + cartTotal.toFixed(2) }}</strong>
         </div>
+        <section class="detail-information cart-policy-information" aria-labelledby="cart-policy-title">
+          <p class="eyebrow">Sample policy</p>
+          <h2 id="cart-policy-title">Shipping and returns</h2>
+          <div class="detail-policy-item">
+            <h3>Shipping</h3>
+            <p>Standard delivery takes 3-5 business days. Any shipping cost is shown before checkout.</p>
+          </div>
+          <div class="detail-policy-item">
+            <h3>Returns</h3>
+            <p>Start a return within 30 days of delivery. Final return instructions are provided before checkout.</p>
+          </div>
+          <p class="detail-sample-note">Sample policy information for this prototype.</p>
+        </section>
+        <router-link to="/checkout" class="btn btn-primary mt-3">Continue to checkout</router-link>
         <router-link to="/items" class="btn btn-outline-primary mt-3">Continue shopping</router-link>
       </section>
     </section>

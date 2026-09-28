@@ -7,10 +7,16 @@ export default {
     const selectedItem = Vue.computed(() => {
       return itemsStore.items.find((item) => item.id === route.params.id);
     });
+    const cartMessage = Vue.computed(() => (
+      selectedItem.value && itemsStore.cartMessage.includes(selectedItem.value.name)
+        ? itemsStore.cartMessage
+        : ''
+    ));
 
     return {
       itemsStore,
       selectedItem,
+      cartMessage,
     };
   },
   template: /* html */ `
@@ -60,8 +66,8 @@ export default {
             @click="itemsStore.addToCart(selectedItem)">
             {{ selectedItem.inStock ? 'Add to cart' : 'Out of stock' }}
           </button>
-          <p v-if="itemsStore.cartMessage" class="cart-message" role="status">
-            {{ itemsStore.cartMessage }}
+          <p v-if="cartMessage" class="cart-message" role="status">
+            {{ cartMessage }}
           </p>
 
           <h2 class="detail-subheading">Pillow details</h2>
